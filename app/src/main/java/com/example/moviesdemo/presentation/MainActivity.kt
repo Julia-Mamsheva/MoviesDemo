@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.moviesdemo.presentation.theme.MoviesDemoTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint // разрешает Activity подключаться к графу Hilt
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
