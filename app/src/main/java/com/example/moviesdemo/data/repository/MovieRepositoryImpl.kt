@@ -3,11 +3,12 @@ package com.example.moviesdemo.data.repository
 import com.example.moviesdemo.domain.model.Movie
 import com.example.moviesdemo.domain.repository.MovieRepository
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 
 // Реализует интерфейс из Domain. Единственный класс в проекте,
 // который знает, ГДЕ реально лежат данные.
-class MovieRepositoryImpl : MovieRepository {
+class MovieRepositoryImpl @Inject constructor() : MovieRepository {
 
     // In-memory "база" — для простого опорного проекта достаточно.
     // Когда решите подключить реальную сеть или локальную базу — меняется только этот класс
