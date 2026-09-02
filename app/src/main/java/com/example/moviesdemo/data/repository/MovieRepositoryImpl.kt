@@ -1,5 +1,6 @@
 package com.example.moviesdemo.data.repository
 
+import android.util.Log
 import com.example.moviesdemo.domain.model.Movie
 import com.example.moviesdemo.domain.repository.MovieRepository
 import kotlinx.coroutines.delay
@@ -26,7 +27,10 @@ class MovieRepositoryImpl @Inject constructor() : MovieRepository {
     override suspend fun toggleFavorite(movieId: String) {
         val index = movies.indexOfFirst { it.id == movieId }
         if (index != -1) {
+            Log.d("First", movies[index].title + movies[index].isFavorite.toString())
             movies[index] = movies[index].copy(isFavorite = !movies[index].isFavorite)
+            Log.d("Second",movies[index].title + movies[index].isFavorite.toString())
+
         }
     }
 }

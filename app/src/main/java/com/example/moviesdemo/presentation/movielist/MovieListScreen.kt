@@ -1,5 +1,6 @@
 package com.example.moviesdemo.presentation.movielist
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
@@ -69,6 +70,7 @@ fun MovieListContent(
 @Composable
 fun MovieRow(movie: Movie, onFavoriteClick: () -> Unit) {
     Row(modifier = Modifier.testTag("movie_row_${movie.id}")) {
+        Log.d("MovieRow", "Recompose: ${movie.title} isFavorite=${movie.isFavorite}")
         Text(movie.title, modifier = Modifier.weight(1f))
         Text("${movie.rating} ★")
         IconButton(
