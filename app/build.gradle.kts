@@ -35,6 +35,15 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.md"
+        }
+    }
 }
 
 dependencies {
@@ -65,7 +74,9 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
-    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android) {
+        exclude(group = "org.junit.jupiter")
+    }
     androidTestImplementation(libs.mockk.android)
 
     implementation(libs.androidx.compose.material.icons.core)
