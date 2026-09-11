@@ -80,4 +80,7 @@ dependencies {
     androidTestImplementation(libs.mockk.android)
 
     implementation(libs.androidx.compose.material.icons.core)
+
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
 }
