@@ -39,8 +39,12 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun loadMovies() = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true) }
-        val movies = getSortedMovies(_uiState.value.sortOrder)
-        _uiState.update { it.copy(isLoading = false, movies = movies) }
+        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+        try {
+            val movies = getSortedMovies(_uiState.value.sortOrder)
+            _uiState.update { it.copy(isLoading = false, movies = movies) }
+        } catch (e: Exception) {
+            _uiState.update { it.copy(isLoading = false, errorMessage = "Не удалось загрузить фильмы") }
+        }
     }
 }

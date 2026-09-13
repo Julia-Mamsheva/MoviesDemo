@@ -8,5 +8,6 @@ import com.example.moviesdemo.domain.usecase.SortOrder
 data class MovieListUiState(
     val movies: List<Movie> = emptyList(),
     val isLoading: Boolean = false,
+    val errorMessage: String? = null, //при подключении сети может появяится ошибка
     val sortOrder: SortOrder = SortOrder.RATING
 )
