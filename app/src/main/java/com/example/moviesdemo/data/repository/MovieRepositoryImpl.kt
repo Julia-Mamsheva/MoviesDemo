@@ -3,7 +3,9 @@ package com.example.moviesdemo.data.repository
 import android.util.Log
 import com.example.moviesdemo.data.local.MovieDao
 import com.example.moviesdemo.data.local.MovieEntity
+import com.example.moviesdemo.data.local.MovieLocalDataSource
 import com.example.moviesdemo.data.local.toDomain
+import com.example.moviesdemo.data.remote.MovieRemoteDataSource
 import com.example.moviesdemo.domain.model.Movie
 import com.example.moviesdemo.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineScope
@@ -11,41 +13,37 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
-
 
 // data/repository/MovieRepositoryImpl.kt
 
 class MovieRepositoryImpl @Inject constructor(
-    private val dao: MovieDao
+    private val remote: MovieRemoteDataSource,
+    private val local: MovieLocalDataSource
 ) : MovieRepository {
 
-    init {
-        // "Посев" начальных данных — заменяет старый mutableListOf(...).
-        // В реальном приложении на этом месте была бы синхронизация с сетью.
-        seedIfEmpty()
-    }
-
-    private fun seedIfEmpty() {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (dao.count() == 0) {
-                dao.insertAll(listOf(
-                    MovieEntity("1", "Матрица", rating = 8.7, isFavorite = false),
-                    MovieEntity("2", "Начало", rating = 8.8, isFavorite = false),
-                    MovieEntity("3", "Интерстеллар", rating = 8.6, isFavorite = true),
-                ))
+    override suspend fun getMovies(): List<Movie> {
+        return try {
+            // Сначала пробуем сеть — свежие данные
+            val remoteMovies = remote.fetchPopularMovies().map { dto ->
+                Movie(
+                    id = dto.id.toString(),
+                    title = dto.title,
+                    rating = dto.voteAverage,
+                    isFavorite = false // избранное — локальная информация, сеть про него не знает
+                )
             }
+            local.cacheMovies(remoteMovies) // обновляем кэш свежими данными
+            local.getCachedMovies() // читаем обратно из кэша — там уже сохранены isFavorite=true для тех, что были избранными
+        } catch (e: IOException) {
+            // Нет сети — откатываемся на то, что уже закэшировано (offline-first)
+            local.getCachedMovies()
         }
     }
 
-    override suspend fun getMovies(): List<Movie> {
-        return dao.observeAll().first().map { it.toDomain() }
-        // .first() — берём одно текущее значение Flow,
-        // интерфейс MovieRepository пока остаётся suspend-функцией, не Flow
-    }
-
     override suspend fun toggleFavorite(movieId: String) {
-        val current = dao.observeAll().first().first { it.id == movieId }
-        dao.setFavorite(movieId, !current.isFavorite)
+        val current = local.getCachedMovies().first { it.id == movieId }
+        local.setFavorite(movieId, !current.isFavorite)
     }
 }
