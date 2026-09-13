@@ -21,6 +21,7 @@ import com.example.moviesdemo.domain.usecase.SortOrder
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.MaterialTheme
 
 
 // "Умная" версия — знает про ViewModel
@@ -52,9 +53,12 @@ fun MovieListContent(
             }
         }
 
-        if (uiState.isLoading) {
+        if (uiState.errorMessage != null) {
+            Text(uiState.errorMessage, color = MaterialTheme.colorScheme.error)
+        } else if (uiState.isLoading) {
             CircularProgressIndicator(modifier = Modifier.testTag("loading"))
-        } else {
+        }
+        else {
             LazyColumn {
                 items(uiState.movies, key = { it.id }) { movie ->
                     MovieRow(
