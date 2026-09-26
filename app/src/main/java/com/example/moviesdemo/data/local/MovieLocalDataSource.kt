@@ -29,4 +29,5 @@ class MovieLocalDataSource @Inject constructor(
         dao.insertAll(entities)
     }
     suspend fun setFavorite(movieId: String, isFavorite: Boolean) = dao.setFavorite(movieId, isFavorite)
+   suspend fun updateCoverImage(movieId: String, savedPath: String) =dao.updateCoverImage(movieId,savedPath)
 }

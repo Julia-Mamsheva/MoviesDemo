@@ -1,6 +1,7 @@
 package com.example.moviesdemo.data.repository
 
 import android.util.Log
+import com.example.moviesdemo.data.local.ImageStorage
 import com.example.moviesdemo.data.local.MovieDao
 import com.example.moviesdemo.data.local.MovieEntity
 import com.example.moviesdemo.data.local.MovieLocalDataSource
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val remote: MovieRemoteDataSource,
-    private val local: MovieLocalDataSource
+    private val local: MovieLocalDataSource,
+    private val imageStorage: ImageStorage // ← новая зависимость
 ) : MovieRepository {
 
     override suspend fun getMovies(): List<Movie> {
@@ -45,5 +47,10 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun toggleFavorite(movieId: String) {
         val current = local.getCachedMovies().first { it.id == movieId }
         local.setFavorite(movieId, !current.isFavorite)
+    }
+    override suspend fun updateCoverImage(movieId: String, sourceUri: String): String {
+        val savedPath = imageStorage.saveImage(sourceUri, movieId)
+        local.updateCoverImage(movieId, savedPath) // не забыть добавить этот метод в MovieLocalDataSource
+        return savedPath
     }
 }
