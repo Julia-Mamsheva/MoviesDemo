@@ -22,4 +22,9 @@ interface MovieDao {
 
     @Query("UPDATE movies SET isFavorite = :isFavorite WHERE id = :movieId")
     suspend fun setFavorite(movieId: String, isFavorite: Boolean)
+
+    // data/local/MovieDao.kt — добавить метод
+
+    @Query("UPDATE movies SET coverImagePath = :path WHERE id = :movieId")
+    suspend fun updateCoverImage(movieId: String, path: String)
 }

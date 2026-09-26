@@ -2,6 +2,7 @@ package com.example.moviesdemo.data.di
 
 import android.content.Context
 import androidx.room3.Room
+import com.example.moviesdemo.data.local.MIGRATION_1_2
 import com.example.moviesdemo.data.local.MovieDao
 import com.example.moviesdemo.data.local.MoviesDatabase
 import dagger.Module
@@ -22,7 +23,10 @@ object DatabaseModule {
             context,
             MoviesDatabase::class.java,
             "movies.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2) // ← без этого апдейт приложения упадёт с IllegalStateException
+            .build()
+
     }
 
     @Provides

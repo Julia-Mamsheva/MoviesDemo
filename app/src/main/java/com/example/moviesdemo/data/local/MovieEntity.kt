@@ -10,5 +10,6 @@ data class MovieEntity(
     @PrimaryKey val id: String,
     val title: String,
     val rating: Double,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val coverImagePath: String? = null // новая колонка
 )

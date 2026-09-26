@@ -8,12 +8,14 @@ fun MovieEntity.toDomain() = Movie(
     id = id,
     title = title,
     rating = rating,
-    isFavorite = isFavorite
+    isFavorite = isFavorite,
+    coverImagePath = coverImagePath
 )
 
 fun Movie.toEntity() = MovieEntity(
     id = id,
     title = title,
     rating = rating,
-    isFavorite = isFavorite
+    isFavorite = isFavorite,
+    coverImagePath = coverImagePath
 )
