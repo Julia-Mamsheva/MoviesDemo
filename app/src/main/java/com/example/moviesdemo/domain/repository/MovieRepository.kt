@@ -8,4 +8,7 @@ import com.example.moviesdemo.domain.model.Movie
 interface MovieRepository {
     suspend fun getMovies(): List<Movie>
     suspend fun toggleFavorite(movieId: String)
+    suspend fun updateCoverImage(movieId: String, sourceUri: String): String
+    // sourceUri — это Uri.toString() из галереи/камеры.
+    // Возвращает итоговый ЛОКАЛЬНЫЙ путь, куда картинка реально сохранена
 }

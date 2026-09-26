@@ -6,5 +6,8 @@ data class Movie(
     val id: String,
     val title: String,
     val rating: Double,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val coverImagePath: String? = null // локальный путь к пользовательской обложке. null = обложки нет
+    // Обратите внимание: это String, а не android.net.Uri —
+    // domain по-прежнему не должен знать про Android-специфичные типы
 )
