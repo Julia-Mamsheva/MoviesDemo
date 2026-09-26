@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.moviesdemo.R
@@ -152,10 +153,10 @@ fun MovieRow(
         Text("${movie.rating} ★")
 
         IconButton(onClick = onGalleryClick, modifier = Modifier.testTag("gallery_button_${movie.id}")) {
-            Icon(Icons.Default.Menu, contentDescription = "Выбрать из галереи")
+            Icon(painterResource( R.drawable.ic_files), contentDescription = "Выбрать из галереи")
         }
         IconButton(onClick = onCameraClick, modifier = Modifier.testTag("camera_button_${movie.id}")) {
-            Icon(Icons.Default.AccountBox, contentDescription = "Сделать фото")
+            Icon(painterResource(R.drawable.ic_camera), contentDescription = "Сделать фото")
         }
         IconButton(onClick = onFavoriteClick, modifier = Modifier.testTag("favorite_button_${movie.id}")) {
             Icon(
