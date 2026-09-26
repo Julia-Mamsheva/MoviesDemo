@@ -47,4 +47,14 @@ class MovieListViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = false, errorMessage = "Не удалось загрузить фильмы") }
         }
     }
+    fun onCoverImageSelected(movieId: String, sourceUri: String) = viewModelScope.launch {
+        val savedPath = repository.updateCoverImage(movieId, sourceUri)
+
+        // Обновляем UI из уже загруженных данных — БЕЗ повторного похода в сеть,
+        // ровно по той же причине, что и с избранным
+        val updatedMovies = _uiState.value.movies.map { movie ->
+            if (movie.id == movieId) movie.copy(coverImagePath = savedPath) else movie
+        }
+        _uiState.update { it.copy(movies = updatedMovies) }
+    }
 }
