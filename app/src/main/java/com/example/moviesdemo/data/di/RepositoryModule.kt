@@ -1,5 +1,7 @@
 package com.example.moviesdemo.data.di
 
+import com.example.moviesdemo.data.local.AndroidImageStorage
+import com.example.moviesdemo.data.local.ImageStorage
 import com.example.moviesdemo.data.repository.MovieRepositoryImpl
 import com.example.moviesdemo.domain.repository.MovieRepository
 import dagger.Binds
@@ -19,4 +21,7 @@ abstract class RepositoryModule {
         impl: MovieRepositoryImpl
     ): MovieRepository
     // ↑ "Когда кто-то попросит MovieRepository — подставляй MovieRepositoryImpl"
+
+    @Binds
+    abstract fun bindImageStorage(impl: AndroidImageStorage): ImageStorage
 }
