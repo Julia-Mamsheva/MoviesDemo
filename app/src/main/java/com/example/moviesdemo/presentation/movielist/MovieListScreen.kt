@@ -118,7 +118,7 @@ fun MovieListContent(
         if (uiState.errorMessage != null) {
             Text(uiState.errorMessage, color = MaterialTheme.colorScheme.error)
         } else if (uiState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.testTag("loading"))
+            CircularProgressIndicator(modifier = Modifier.testTag("loading_indicator"))
         }
         else {
             LazyColumn {
@@ -135,6 +135,10 @@ fun MovieListContent(
     }
 }
 
+/**
+ *
+ * @param movie
+ */
 @Composable
 fun MovieRow(
     movie: Movie,
@@ -149,7 +153,7 @@ fun MovieRow(
             modifier = Modifier.size(56.dp),
             contentScale = ContentScale.Crop
         )
-        Text(movie.title, modifier = Modifier.weight(1f))
+        Text(movie.title, modifier = Modifier.weight(1f).testTag(movie.title))
         Text("${movie.rating} ★")
 
         IconButton(onClick = onGalleryClick, modifier = Modifier.testTag("gallery_button_${movie.id}")) {

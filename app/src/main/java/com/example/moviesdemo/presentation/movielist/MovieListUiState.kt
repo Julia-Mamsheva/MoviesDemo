@@ -7,7 +7,7 @@ import com.example.moviesdemo.domain.usecase.SortOrder
 // доменная Movie про такое знать не должна.
 data class MovieListUiState(
     val movies: List<Movie> = emptyList(),
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val errorMessage: String? = null, //при подключении сети может появяится ошибка
     val sortOrder: SortOrder = SortOrder.RATING
 )
